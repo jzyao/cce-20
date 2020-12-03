@@ -17,8 +17,6 @@ VPC网络模式
 Elasticsearch 镜像：docker.elastic.co/elasticsearch/elasticsearch:7.6.2
 Kibana 镜像：docker.elastic.co/kibana/kibana:7.6.2
 Fluentd 镜像：quay.io/fluentd_elasticsearch/fluentd:v3.0.1
-elastalert 镜像：jertel/elastalert-docker:0.2.4
-Rook Ceph 镜像：rook/ceph:v1.2.1
 
 ## 创建 Elasticsearch 集群
 
