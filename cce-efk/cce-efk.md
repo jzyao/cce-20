@@ -92,7 +92,7 @@ deployment.apps/kibana created
 ```
 老规矩 
 ```
-kkubectl create -f fluentd-configmap.yaml
+$kubectl create -f fluentd-configmap.yaml
 configmap "fluentd-config" created
 $ kubectl create -f fluentd-daemonset.yaml
 serviceaccount "fluentd-es" created
