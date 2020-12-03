@@ -11,14 +11,15 @@
 
 实验环境版本：
 
-在CCE服务中创建3个工作节点的集群
-Kubernetes：v1.17.9
-VPC网络模式
+在CCE服务中创建3个工作节点的集群, Kubernetes：v1.17.9,VPC网络模式
 ![Architecture Diagram](./img/jiqundetail.png)
 
 把如下镜像推送到华为云SWR服务
+
 Elasticsearch 镜像：docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+
 Kibana 镜像：docker.elastic.co/kibana/kibana:7.6.2
+
 Fluentd 镜像：quay.io/fluentd_elasticsearch/fluentd:v3.0.1
 
 ## 创建 Elasticsearch 集群
@@ -49,6 +50,7 @@ volumeClaimTemplates:
         storage: 30Gi
     storageClassName: csi-nas 
 ```
+
 创建Elasticsearch StatefulSet
 ```
 kubectl apply -f elasticsearch-statefulset.yaml
@@ -56,7 +58,8 @@ kubectl apply -f elasticsearch-statefulset.yaml
 ## 创建Kibana服务
 Elasticsearch 集群启动成功了，接下来我们可以来部署 Kibana 服务。参见kibana.yaml
 
-其中我们定义了两个资源对象，一个 Service 和 Deployment，我们将 Service 设置为了 LoadBalander 类型，Kibana Pod 中配置都比较简单，唯一需要注意的是我们使用 ELASTICSEARCH_HOSTS 这个环境变量来设置Elasticsearch 集群的端点和端口，直接使用 Kubernetes DNS 即可，此端点对应服务名称为 elasticsearch，由于是一个 headless service，所以该域将解析为3个 Elasticsearch Pod 的 IP 地址列表
+其中我们定义了两个资源对象，一个 Service 和 Deployment，我们将 Service 设置为了 LoadBalander 类型，Kibana Pod 中配置都比较简单，唯一需要注意的是我们使用 ELASTICSEARCH_HOSTS 这个环境变量来设置Elasticsearch 集群的端点和端口，直接使用 Kubernetes DNS 即可，此端点对应服务名称为 elasticsearch，由于是一个 headless service，所以该域将解析为3个 Elasticsearch Pod 的 IP 地址列表。
+
 配置完成后，直接使用 kubectl 工具创建：
 ```
 $ kubectl create -f kibana.yaml
@@ -64,10 +67,10 @@ service/kibana created
 deployment.apps/kibana created
 ```
 运气好的话，一分钟后就能看到如下欢迎页面
+
 ![kibana Diagram](./img/kibanaorig.png)
 
 ## 部署 Fluentd
-
 没什么太复杂的地方，唯一要注意一下两点
 ### 过滤
 由于 Kubernetes 集群中应用太多，也还有很多历史数据，所以我们可以只将某些应用的日志进行收集，比如我们只采集具有 logging=true 这个 Label 标签的 Pod 日志，这个时候就需要使用 filter，如下所示：
@@ -119,7 +122,9 @@ spec:
 $ kubectl create -f counter.yaml
 ```
 Pod 创建并运行后，回到 Kibana Dashboard 页面，点击左侧最下面的 management 图标，然后点击 Kibana 下面的 Index Patterns 开始导入索引数据：
+
 ![kibana Diagram](./img/createindex.png)
+
 在这里可以配置我们需要的 Elasticsearch 索引，前面 Fluentd 配置文件中我们采集的日志使用的是 logstash 格式，定义了一个 k8s 的前缀，所以这里只需要在文本框中输入k8s-*即可匹配到 Elasticsearch 集群中采集的 Kubernetes 集群日志数据，然后点击下一步，进入以下页面：
 ![kibana Diagram](./img/createindex2.png)
 在该页面中配置使用哪个字段按时间过滤日志数据，在下拉列表中，选择@timestamp字段，然后点击Create index pattern，创建完成后，点击左侧导航菜单中的Discover，然后就可以看到一些直方图和最近采集到的日志数据了, 添加过滤。
