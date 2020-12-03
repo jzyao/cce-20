@@ -14,7 +14,7 @@
 在CCE服务中创建3个工作节点的集群
 Kubernetes：v1.17.9
 VPC网络模式
-![Architecture Diagram](/img/jiqundetail.png)
+![Architecture Diagram](./img/jiqundetail.png)
 
 把如下镜像推送到华为云SWR服务
 Elasticsearch 镜像：docker.elastic.co/elasticsearch/elasticsearch:7.6.2
