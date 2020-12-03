@@ -1,7 +1,7 @@
 # CCE上创建EFK
 前言，本文目的是帮忙年轻人快速在华为云容器上部署EFK。
 
-文中步骤和指导均参考阳明的博客，具体技术细节和原理请移步 https://www.qikqiak.com/post/install-efk-stack-on-k8s/
+文中步骤和指导均参考阳明的博客，具体技术细节和原理请移步 -> https://www.qikqiak.com/post/install-efk-stack-on-k8s/
 
 因为华为公有云容器服务提供的在容器存储，网络和服务暴露等提供了更多更便捷的选项。所以文中做了相应的实操指导。所有yaml文件都已上传。
 
